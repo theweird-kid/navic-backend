@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  navic-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+      - rabbitmq
+    env_file:
+      - .env
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672" # RabbitMQ default port for messaging
+      - "15672:15672" # RabbitMQ Management UI
+
+volumes:
+  mongo-data:
